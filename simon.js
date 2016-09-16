@@ -1,4 +1,5 @@
 /* jshint esversion:6 */
+/* jslint esversion:6 */
 
 var game = {
   state: {
@@ -29,3 +30,14 @@ $(".quarter-circle").on('mousedown touchstart',function() {
 $(".quarter-circle").on('mouseup mouseout touchmove touchend ', function() {
   $(this).removeClass("active");
 });
+
+
+// create random array of twenty colors/sounds
+// play color/sounds on start button press
+// record player input and match to array
+// make inside button borders rounded
+// add onOff switch -- slide to indicate
+// add play buttton -- light up to indicate
+// add strict button -- light up to indicate
+// play winner or loser song/light show
+//
