@@ -26,7 +26,7 @@ body {
 #container {
   position:absolute;
   top:10px;
-  left:26%;
+  left:0;
   height:400px;
   width:400px;
   border-radius:100%;
@@ -133,6 +133,5 @@ silver: #aaaaaa (170,170,170)
 */
 .active {
   border:22px solid black;
-
   opacity: 1;
 }
