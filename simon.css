@@ -58,7 +58,7 @@ silver: #aaaaaa (170,170,170)
   opacity:0.8;
 }
 
-.tl {
+.green {
   top:0;
   left:0;
 
@@ -67,7 +67,7 @@ silver: #aaaaaa (170,170,170)
   border-radius: 100% 0 0 0;
 }
 
-.tr {
+.red {
   top:0;
   left:200px;
   background-color:#dd4b3e; /* rgba(221,75,62,0.8);/*red*/
@@ -75,7 +75,7 @@ silver: #aaaaaa (170,170,170)
   border-radius: 0 100% 0 0;
 }
 
-.br {
+.blue {
   top:200px;
   left:200px;
   background-color:#4b3edd; /* rgba(75,62,221,0.8); /*blue*/
@@ -83,7 +83,7 @@ silver: #aaaaaa (170,170,170)
   border-radius: 0 0 100% 0;
 }
 
-.bl {
+.yellow {
   top:200px;
   left:0;
   background-color:#ffea37; /* rgba(255,234,55,0.8);/*yellow*/
