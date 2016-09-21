@@ -1,137 +1,270 @@
 body {
-  margin: auto;
-  background-color: #F49D37;
+  margin:auto;
+  background-color:#FEF9ED;/*black;/*darkslategrey;*/
   /*
-  makes text unselectable and
+   add colorpicker for Isabella to change the background
+  */
+  /*
+  makes text unselectable and 
   avoids ugly blue select boxes */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 }
-
-
-
-.userStory {
-  position: absolute;
-  left: 0;
-  padding: 1px;
-  margin: 1px;
-  width: 25%;
-  border: 1px solid lightblue;
-}
-
-#container {
-  position:absolute;
-  top:10px;
-  left:0;
-  height:400px;
-  width:400px;
-  border-radius:100%;
-  background-color:black;
-}
-
-/*.outer-circle {
-  position:absolute;
-  left:20px;
-  height: 400px;
-  width: 400px;
-  border: 35px solid black;
-  border-radius: 100%;
-}*/
-
 
 /*
-yellow: #ffea37	(255,234,55)
-red:    #dd4b3e	(221,75,62)
-green:  #3edd4b	(62,221,75)
-blue:   #4b3edd	(75,62,221)
-silver: #aaaaaa (170,170,170)
+* Quarter Circles
 */
+
+#bezel {
+  position:relative;
+  top:50px;
+  margin:auto;
+  height:470px;
+  width:470px;
+  border-radius:100%;
+  background-color:black;
+}
+
+/*
+#outer-circle {
+position:absolute;
+top:;
+left:;
+height:100%;
+width:100%;
+height:4010px;
+width:400px;
+border:315px solid black;
+border-radius:100%;
+background:black;
+}
+*/
+
 .quarter-circle {
   position:absolute;
-  width: 50%;/*200px;*/
-  height: 50%;/*200px;*/
-  border:25px solid black;
+  height:47%;
+  width:47%;
   opacity:0.8;
+
 }
-
-.green {
-  top:0;
-  left:0;
-
-  background-color:#3edd4b;  /*rgba(62,221,75,0.8); /*green*/
-  -moz-border-radius: 100% 0 0 0;
-  border-radius: 100% 0 0 0;
-}
-
-.red {
-  top:0;
-  left:200px;
-  background-color:#dd4b3e; /* rgba(221,75,62,0.8);/*red*/
-  -moz-border-radius: 0 100% 0 0;
-  border-radius: 0 100% 0 0;
-}
-
-.blue {
-  top:200px;
-  left:200px;
-  background-color:#4b3edd; /* rgba(75,62,221,0.8); /*blue*/
-  -moz-border-radius: 0 0 100% 0;
-  border-radius: 0 0 100% 0;
-}
-
-.yellow {
-  top:200px;
-  left:0;
-  background-color:#ffea37; /* rgba(255,234,55,0.8);/*yellow*/
-  -moz-border-radius: 0 0 0 100%;
-  border-radius: 0 0 0 100%;
-}
-
-#inner-circle {
+.quarter-circle-back {
   position:absolute;
-  left:90px;
-  top:90px;
+  height:47%;
+  width:47%;
+  background:black;
+
+}
+
+/*
+yellow:#ffea37	(255,234,55)
+red:   #dd4b3e	(221,75,62)
+green: #3edd4b	(62,221,75)
+blue:  #4b3edd	(75,62,221)
+silver:#aaaaaa (170,170,170)
+*/
+
+#green {
+  background-color:#3edd4b; /*green*/
+  -moz-border-radius:100% 0 0 0;
+  border-radius:100% 0 0 0;
+  top:10px;
+  left:10px;
+}
+
+#red {
+  background-color:red;/*#dd4b3e; /*red*/
+  -moz-border-radius:0 100% 0 0;
+  border-radius:0 100% 0 0;
+  top:10px;
+  left:238px;
+}
+
+#blue {
+  background-color:blue; /*#4b3edd*/
+  -moz-border-radius:0 0 100% 0;
+  border-radius:0 0 100% 0;
+  top:238px;
+  left:238px;
+}
+
+#yellow {
+  background-color:#ffea37; /*yellow*/
+  -moz-border-radius:0 0 0 100%;
+  border-radius:0 0 0 100%;
+  top:238px;
+  left:10px;
+}
+#green-back {
+  -moz-border-radius:100% 0 0 0;
+  border-radius:100% 0 0 0;
+  top:10px;
+  left:10px;
+}
+
+#red-back {
+  -moz-border-radius:0 100% 0 0;
+  border-radius:0 100% 0 0;
+  top:10px;
+  left:238px;
+}
+
+#blue-back {
+  -moz-border-radius:0 0 100% 0;
+  border-radius:0 0 100% 0;
+  top:238px;
+  left:238px;
+}
+
+#yellow-back {
+  -moz-border-radius:0 0 0 100%;
+  border-radius:0 0 0 100%;
+  top:238px;
+  left:10px;
+}
+/*
+#inner-cross {
+background:black;
+height:430px;
+position:relative;
+width:60px;
+top:-10px;
+left:170px;
+}
+
+#inner-cross:after {
+background:black;
+content:"";
+height:60px;
+left:-185px;
+position:absolute;
+top:170px;
+width:420px;
+}
+*/
+
+#control-panel {
+  position:absolute;
+  margin:auto;
+  top:113px;
+  left:113px;
   background-color:black;
-  height:220px;
-  width:220px;
-  border:2px solid #aaaaaa;
+  height:243px;
+  width:243px;
+  border:1px solid silver;
   -moz-border-radius:100%;
   border-radius:100%;
+  box-shadow:0 0 5px 5px silver;
 }
 
 #simon {
-  position:absolute;
-  top:15px;
-  left:20px;
-  font-family:'Sigmar One', cursive;
-  font-size:50px;
+  position:relative;
+  top:12px;
+  left:12px;
+  font-family:'Sigmar One';
+  font-size:55px;
   text-decoration:underline;
-  /*text-shadow:-1px 0 blue, 0 1px blue, 1px 0 blue, 0 -1px blue;*/
-  color:#aaaaaa;
-  /*opacity:0.8;*/
+  text-shadow:-1px 0 blue,
+    0 1px blue,
+    1px 0 blue,
+    0 -1px blue;
+  color:silver;
+  opacity:0.8;
 }
 
-/*#led {
+#lcd {
+  position:absolute;
+  top:100px;
+  left:12px;
+  padding:0 2px 0 0;
+  height:45px;
+  width:45px;
+  text-align:center;
+  /*
+ Comfortaa|Inconsolata
+ Roboto Mono|Source Code Pro|VT323
+  */
+  font-family:'VT323';
+  font-size:50px;
+  line-height:0.845;
+  text-shadow:5px 0 10px red;
+  border:2px solid silver;
+  border-radius:3px;
+  color:red;
+}
 
+#start-btn {
+  position:absolute;
+  top:108px;
+  left:109px;
+  height:25px;
+  width:25px;
+  border-radius:100%;
+  background:red;
 }
 
 #start {
-
+  position:absolute;
+  top:129px;
+  left:87px;
+  height:10px;
+  width:10px;
+  font-family:'Sigmar One';
+  font-size:18px;
+  color:silver;
 }
 
-#onOff {
-
+#strict-btn {
+  position:absolute;
+  top:108px;
+  right:35px;
+  height:25px;
+  width:25px;
+  border-radius:100%;
+  background:red;
 }
 
 #strict {
-
+  position:absolute;
+  top:129px;
+  right:70px;
+  height:10px;
+  width:10px;
+  font-family:'Sigmar One';
+  font-size:18px;
+  color:silver;
 }
-*/
+
+#switch {
+  position:absolute;
+  top:155px;
+  left:50px;
+}
+
+#onOff-btn {
+  position:absolute;
+  top:30px;
+  left:59px;
+  height:25px;
+  width:25px;
+  border-radius:100%;
+  background:red;
+}
+
+#onOff {
+  position:absolute;
+  top:55px;
+  left:35px;
+  height:10px;
+  width:10px;
+  font-family:'Sigmar One';
+  font-size:18px;
+  color:silver;
+}
+
 .active {
-  border:22px solid black;
-  opacity: 1;
+  background-color:white;
 }
