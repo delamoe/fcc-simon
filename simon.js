@@ -30,7 +30,7 @@ console.log();
   });
 
   //$("").css({"":""});
-  $("#lcd").css({"color":"grey","text-shadow":"none"});
+  $(".digit").css({"color":"grey","text-shadow":"none"});
   $("#onOff-btn").css({"background":"maroon"});
   $("#start-btn, #strict-btn").css({"background":"silver"});
 
@@ -44,10 +44,10 @@ console.log();
 
       if (simon.on === true && simon.player === false) {
         //simon.playAround = true;
-        $("#lcd").html("00").css({"color":"","text-shadow":""});
+        $(".digit").html("00").css({"color":"","text-shadow":""});
         $("#onOff-btn, #start-btn, #strict-btn").css({"background":"red"});
       } else {
-        $("#lcd").html("88").css({"color":"grey","text-shadow":"none"});
+        $(".digit").html("88").css({"color":"grey","text-shadow":"none"});
         $("#onOff-btn").css({"background":"maroon"});
         $("#start-btn, #strict-btn").css({"background":"silver"});
 
@@ -124,7 +124,7 @@ console.log();
         result = x + str + y + str + z + str + color;
         break;
       case 'yellow':
-        result = -x + str + y + str + 2*z + str + color;
+        result = -x + str + y + str + z + str + color;
         break;
     } return result;
   };
@@ -156,7 +156,7 @@ console.log();
       return;
     } else {
       console.log("song:\n", song, "mainCounter: ", mainCounter,"\nplayCount: ", playCount);
-      $("#lcd").html(zeroPad(mainCounter+1,2));
+      $(".digit").html(zeroPad(mainCounter+1,2));
       let color = song[playCount],
           elementId = "#"+color;
       flashOn(elementId, playCount);
@@ -254,9 +254,8 @@ console.log();
   }
 
   function flashBangBang() {
-    $("#lcd").html("!!").fadeIn(200).fadeOut(200)
-      .fadeIn(200).fadeOut(200).fadeIn(200);
-    setTimeout(playSong, 1250, 0);
+    $(".digit").html("!!").animate({opacity:0}, 150).animate({opacity:1}, 150).animate({opacity:0}, 150).animate({opacity:1}, 150).animate({opacity:0}, 150).animate({opacity:1}, 150);
+    setTimeout(playSong, 1200, 0);
     return;
   }
 
