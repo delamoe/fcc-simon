@@ -3,9 +3,9 @@
 // ToDo
 // increase speed at 5, 9 & 15
 // set time limit on responce
+// clear all variables when turned off
 // 
 
-console.log();
 (function() { //
 
   const game = {
@@ -20,10 +20,45 @@ console.log();
       playAround: false
     }
   };
+ 
 
   const simon = game.state;
   let // mainCounter will log the turns
   mainCounter= 0;
+	
+  window.AudioContext = window.AudioContext;
+
+// Create a new instance of AudioContext
+// for the game sounds
+var ctx = new AudioContext();
+var currentOsc;
+var scale = {
+		 green: 415.305,
+		 red: 311.127,
+		 blue: 207.652,
+		 yellow: 247.942,
+		 alert: 42,
+     currentOsc: null
+	 };
+
+function startWave(color) {
+    var osc = ctx.createOscillator();
+    osc.frequency.value = scale[color];
+    osc.type = 'square';
+    osc.start(0);
+    osc.connect(ctx.destination);
+
+    // Create a reference to our oscillator so we
+    // can call stop on it in stopWave
+    // notice that this variable was declared outside
+ 
+ // this function so that is is accessible to stopWave
+    scale.currentOsc = osc;
+}
+
+function stopWave() {
+    scale.currentOsc.stop(0);
+}
 
   $('div.inner-circle').on("click tap", function(e) {
     e.stopPropagation();
@@ -40,52 +75,41 @@ console.log();
   function turnOn() {
     $("#onOff-btn").on("click tap", function() {
       simon.on = simon.on === true ? false : true;
-      console.log("simon: ",simon.on);
+	let onOff = null;
+		onOff = simon.on === true ? "On" : "Off" ;
+      console.log("simon is",onOff);
 
       if (simon.on === true && simon.player === false) {
-        //simon.playAround = true;
         $(".digit").html("00").css({"color":"","text-shadow":""});
         $("#onOff-btn, #start-btn, #strict-btn").css({"background":"red"});
+					$("#onOff-btn").off(); // this is not the solution
       } else {
         $(".digit").html("88").css({"color":"grey","text-shadow":"none"});
         $("#onOff-btn").css({"background":"maroon"});
         $("#start-btn, #strict-btn").css({"background":"silver"});
-
-        simon.on = false;
-        simon.start = false;
-        simon.simon = false;
-        simon.player = false;
-        simon.strict = false;
-        simon.win = false;
-        simon.lcdOn = false;
-        simon.playAround = false;
-        mainCounter = 0;
-        playCount = 0;
-        checkCount = 0;
-
-        console.log( simon.on,
-                    simon.start,
-                    simon.simon,
-                    simon.player,
-                    simon.strict,
-                    simon.win,
-                    simon.lcdOn,
-                    simon.playAround,
-                    mainCounter,
-                    playCount,
-                    checkCount
-                   );
-
+// write a reset function
+					
       }
     });
 
     $("#start-btn").on("click tap", function() {
-      if (simon.on === true) {
-        simon.simon = true;
-        simon.playAround = false;
+      if (simon.on === true && simon.start === false) {
         console.log("start was clicked");
-        setTimeout(playSong, 750,mainCounter);
-      }
+					simon.start = true;
+		
+        setTimeout(playSong, 750, mainCounter);
+					$("#start-btn").off();
+					return;
+      } else if (simon.on === true && simon.start === true) {
+					// write a restart function
+					//$("div.quarter-circle").off();
+					/*simon.player = false;
+					mainCounter =  0;
+					song = getSong();
+					$(".digit").html("00").css({"color":"","text-shadow":""});
+					setTimeout(playSong, 750, 0);*/
+					return;
+				}
     });
 
     $("#strict-btn").on("click tap", function() {
@@ -148,8 +172,8 @@ console.log();
   // set song as constant for duration of game
   let song = getSong();//["green", "red", "blue", "yellow", "green", "red", "blue", "yellow"];
 
-  function playSong(playCount) {
-
+	function playSong(playCount) {
+	if (scale.currentOsc) stopWave();
     if (playCount > mainCounter) {
       console.log("calling responder(0)");
       responder(0); //or something???
@@ -157,28 +181,41 @@ console.log();
     } else {
       console.log("song:\n", song, "mainCounter: ", mainCounter,"\nplayCount: ", playCount);
       $(".digit").html(zeroPad(mainCounter+1,2));
-      let color = song[playCount],
-          elementId = "#"+color;
-      flashOn(elementId, playCount);
+      let color = song[playCount];
+      flashOn(color, playCount);
       return;
     }
   }
 
-  function flashOn(elementId, playCount) {
+  function flashOn(color, playCount) {
+	  let time = 1000;
+	  time = time - mainCounter * 50;
     console.log('flashOn\nplayCount: \n', playCount);
-    $(elementId+"-back").css({"background-color": "white"});
-    console.log("flash:\n",elementId);
-    setTimeout(flashOff, 1000, playCount);
+    $("#" + color + "-back").css({"background": "white"});
+	$("#bezel").css({"box-shadow":boxShadowDirection(color,50,50,150)});
+	startWave(color);
+    console.log("flash:\n",color);
+	/*if (mainCounter > 4) { time = 800; }
+	if (mainCounter > 8) { time = 600; }
+	if (mainCounter > 14) { time = 400; }*/
+    setTimeout(flashOff, time, playCount);
     return;
   }
 
   function flashOff(playCount) {
-    $('.flash').css({"background-color": "black"});
+	  let time = 100;
+	  time = time - mainCounter * 5;
+    $('.flash').css({"background": "black"});
+	$("#bezel").css({"box-shadow":""});
     console.log('flashOff\nplayCount: \n', playCount);
+	stopWave();
     playCount++;
     console.log('playCount++: \n', playCount,
                 "\nplaySong(",playCount,")");
-    setTimeout(playSong, 300, playCount);
+	/*if (mainCounter > 4) { time = 80; }
+	if (mainCounter > 8) { time = 60; }
+	if (mainCounter > 14) { time = 40; }*/
+    setTimeout(playSong, time, playCount);
     return;
   }
 
@@ -193,7 +230,8 @@ console.log();
     $("div.quarter-circle").on('mousedown touchstart',function(e) {
       if (simon.player === true) {
         $("#"+this.id+"-back").css({"background-color": "white"});
-        $("#bezel").css({"box-shadow": boxShadowDirection(this.id,0,0,150)});
+        $("#bezel").css({"box-shadow": boxShadowDirection(this.id,50,50,150)});
+		startWave(this.id);
         ready = true;
 
       }
@@ -201,6 +239,7 @@ console.log();
       if (ready === true) {
         $(".flash").css("background", "black");
         $("#bezel").css({"box-shadow": ""});
+				stopWave();
         ready = false;
         simon.player = false;
         console.log('player clicked: ', this.id,
@@ -241,7 +280,7 @@ console.log();
       console.log("mainCounter++");
       mainCounter++;
       console.log("calling playSong(0);");
-      setTimeout(playSong, 750, 0);
+      setTimeout(playSong, 500, 0);
       return;
     }
   }
@@ -249,13 +288,23 @@ console.log();
   function clickedWrong() {
     console.log("BEEEP!!!");
     mainCounter = simon.strict === true ? 0 : mainCounter;
+		song = simon.strict === true ? getSong() : song;
     flashBangBang();
     return;
   }
 
-  function flashBangBang() {
-    $(".digit").html("!!").animate({opacity:0}, 150).animate({opacity:1}, 150).animate({opacity:0}, 150).animate({opacity:1}, 150).animate({opacity:0}, 150).animate({opacity:1}, 150);
-    setTimeout(playSong, 1200, 0);
+  function flashBangBang(twoDigits) {
+	  startWave("alert");
+	  if (twoDigits === undefined) { twoDigits = "!!"; }
+    $(".digit").html(twoDigits)
+		.animate({opacity:0}, 75).animate({opacity:1}, 75)
+		.animate({opacity:0}, 75).animate({opacity:1}, 75)
+		.animate({opacity:0}, 75).animate({opacity:1}, 75)
+		.animate({opacity:0}, 75).animate({opacity:1}, 75)
+		.animate({opacity:0}, 75).animate({opacity:1}, 75)
+		.animate({opacity:0}, 75).animate({opacity:1}, 75);
+	setTimeout(stopWave, 900);
+    setTimeout(playSong, 1300, 0);
     return;
   }
 

@@ -141,7 +141,7 @@ body {
 	position:absolute;
 	top:1%;
 	left:10%;
-	font-size:9vmin;
+	font-size:55px;
 	text-decoration:underline;
 	}
 
@@ -160,7 +160,7 @@ body {
 
 .digit {
 	font-family:'VT323';
-	font-size:8vmin;
+	font-size:50px;
 	line-height:0.845;
 	text-shadow:1px 1px 10px red;
 	color:red;
