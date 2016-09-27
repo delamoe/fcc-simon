@@ -247,7 +247,7 @@ function bigButtonClickHandler(checkCount) {
 
 let ready = false;
 $(".quarter-circle").on('mousedown touchstart',function(e) {
-  clearTimeoutAndSounds();
+  clearTimeoutAndSounds(); // this is not the best solution...
   if (simon.player === true) {
     $("#"+this.id+"-back").css({"background-color": "white"});
     $("#bezel").css({"box-shadow": boxShadowDirection(this.id,50,50,150)});
