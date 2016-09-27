@@ -3,8 +3,6 @@
 // ToDo
 // increase speed at 5, 9 & 15
 // set time limit on responce
-// clear all variables when turned off
-// 
 
 (function() { //
 
@@ -23,29 +21,28 @@
 
 
   const simon = game.state;
-  let // mainCounter will log the turns
-  mainCounter= 0;
+  let mainCounter= 0; // mainCounter will log the turns
 
-  window.AudioContext = window.AudioContext;
+ // window.AudioContext = window.AudioContext;
 
   // Create a new instance of AudioContext
   // for the game sounds
-  var ctx = new AudioContext();
-  var currentOsc;
-  var scale = {
-    green: 415.305,
-    red: 311.127,
-    blue: 207.652,
-    yellow: 247.942,
-    alert: 42,
-    currentOsc: null
-  };
+  let ctx = new AudioContext(),
+      currentOsc = null,
+      scale = {
+        green: 415.305,
+        red: 311.127,
+        blue: 207.652,
+        yellow: 247.942,
+        alert: 42
+      };
 
   function startWave(color) {
-    var osc = ctx.createOscillator();
+    let osc = ctx.createOscillator();
     osc.frequency.value = scale[color];
     osc.type = 'square';
     osc.start(0);
+    console.log(ctx,osc);
     osc.connect(ctx.destination);
 
     // Create a reference to our oscillator so we
@@ -53,21 +50,22 @@
     // notice that this variable was declared outside
 
     // this function so that is is accessible to stopWave
-    scale.currentOsc = osc;
+    currentOsc = osc;
   }
 
   function stopWave() {
-    scale.currentOsc.stop(0);
+    currentOsc.stop(0);
   }
 
-  $('div.inner-circle').on("click tap", function(e) {
+  $('div.control-panel').on("click tap", function(e) {
     e.stopPropagation();
   });
 
   //$("").css({"":""});
-  $(".digit").css({"color":"grey","text-shadow":"none"});
-  $("#onOff-btn").css({"background":"maroon"});
-  $("#start-btn, #strict-btn").css({"background":"silver"});
+  // make these default in css file, then activate here...
+  //$(".digit").css({"color":"grey","text-shadow":"none"});
+  //$("#onOff-btn").css({"background":"maroon"});
+  //$("#start-btn, #strict-btn").css({"background":"silver"});
 
 
   $(document).ready(turnOn());
@@ -75,46 +73,61 @@
   function turnOn() {
     $("#onOff-btn").on("click tap", function() {
       simon.on = simon.on === true ? false : true;
-      let onOff = null; onOff = simon.on === true ? "On" : "Off";
-      console.log("simon is",onOff);
+      console.log("simon is", simon.on);
 
       if (simon.on === true && simon.player === false) {
         simon.simon = true;
-        $(".digit").html("00").css({"color":"","text-shadow":""});
-        $("#onOff-btn, #start-btn, #strict-btn").css({"background":"red"});
+
+        $(".digit")
+          .html("--").fadeIn("slow")
+          .css({"color":"red","text-shadow":"1px 1px 10px red"})
+          .animate({opacity:0}, 300).animate({opacity:1}, 300)
+          .animate({opacity:0}, 300).animate({opacity:1}, 300);
+
+        $("#onOff-btn, #start-btn, #strict-btn")
+          .css({"background":"red"});
+
         return;
       }
 
       if (simon.on === false && simon.simon === true) {
-        turnOff();
-        $(".digit").html("88").css({"color":"grey","text-shadow":"none"});
-        $("#onOff-btn").css({"background":"maroon"});
-        $("#start-btn, #strict-btn").css({"background":"silver"});
-        $("div.quarter-circle").off();
-        simon.player = false;
-        return;
+        (function shutDown() {
+          clearTimeoutAndSounds();
+          simon.player = false;
+          //$("div.quarter-circle").off();
+          $(".digit")
+            .html("88")
+            .css({"color":"","text-shadow":""});
+          $("#onOff-btn")
+            .css({"background":"maroon"});
+          $("#start-btn, #strict-btn")
+            .css({"background":"silver"});
+          $("div.quarter-circle").off();
+          simon.strict = false;
+          console.log("stop game");
+          return;
+        }());
       }
     });
 
-    $("#start-btn").on("click tap", function(e) {
+    $("#start-btn").on("click tap", function() {
       if (simon.on === true && simon.start === false) {
         console.log("start was clicked");
         simon.start = true;
+        $(".digit")
+          .html("00")
+          .css({"color":"red","text-shadow":"1px 1px 10px red"})
+          .fadeIn();
         setTimeout(playSong, 750, mainCounter);
-        //$("#start-btn").off(); //this is not a solution
         return;
       }
 
       if (simon.on === true && simon.start === true) {
-        e.preventDefault();
-        // write a restart function
+        //e.preventDefault();
         console.log("start was clicked",
                     "\non: ", simon.on,
                     "\nstart ", simon.start);
-        restart();
-        $("div.quarter-circle").off();
-        simon.player = false;
-        $(".digit").html("00").css({"color":"","text-shadow":""});
+        restart();        
         return;
       }
     });
@@ -184,7 +197,7 @@
   let song = getSong();//["green", "red", "blue", "yellow", "green", "red", "blue", "yellow"];
 
   function playSong(playCount) {
-    if (scale.currentOsc) stopWave();
+    if (currentOsc) stopWave();
     if (playCount > mainCounter) {
       console.log("calling responder(0)");
       responder(0); //or something???
@@ -200,22 +213,27 @@
 
   function flashOn(color, playCount) {
     let time = 1000;
-    time = time - mainCounter * 50;
+    time = time - mainCounter * 40;
     console.log('flashOn\nplayCount: \n', playCount);
     $("#" + color + "-back").css({"background": "white"});
     $("#bezel").css({"box-shadow":boxShadowDirection(color,50,50,150)});
     startWave(color);
     console.log("flash:\n",color);
-    /*if (mainCounter > 4) { time = 800; }
-	if (mainCounter > 8) { time = 600; }
-	if (mainCounter > 14) { time = 400; }*/
+    /*
+*
+// alternate means of speeding up play speed
+if (mainCounter > 4) { time = 800; }
+if (mainCounter > 8) { time = 600; }
+if (mainCounter > 14) { time = 400; }
+*
+*/
     setTimeout(flashOff, time, playCount);
     return;
   }
 
   function flashOff(playCount) {
     let time = 100;
-    time = time - mainCounter * 5;
+    time = time - mainCounter * 3;
     $('.flash').css({"background": "black"});
     $("#bezel").css({"box-shadow":""});
     console.log('flashOff\nplayCount: \n', playCount);
@@ -223,9 +241,14 @@
     playCount++;
     console.log('playCount++: \n', playCount,
                 "\nplaySong(",playCount,")");
-    /*if (mainCounter > 4) { time = 80; }
-	if (mainCounter > 8) { time = 60; }
-	if (mainCounter > 14) { time = 40; }*/
+    /*
+*
+// alternate means of speeding up play speed
+if (mainCounter > 4) { time = 80; }
+if (mainCounter > 8) { time = 60; }
+if (mainCounter > 14) { time = 40; }
+*
+*/
     setTimeout(playSong, time, playCount);
     return;
   }
@@ -237,6 +260,7 @@
   }
 
   function bigButtonClickHandler(checkCount) {
+
     let ready = false;
     $(".quarter-circle").on('mousedown touchstart',function(e) {
       if (simon.player === true) {
@@ -263,12 +287,13 @@
   }
 
   function checkClick(checkCount, color) {
+
     console.log("color: ",color,
                 "\nsong[checkCount]: ",song[checkCount]);
 
     if (color !== song[checkCount]) {
       console.log("bad click at\ncheckCount: ", checkCount);
-      reset();
+      setTimeout(reset, 300);
       return;
     }
 
@@ -285,6 +310,12 @@
       return;
     }
 
+    if (mainCounter === 19) {
+      console.log("winner, winner, chicken dinner!!!")
+      playWinSong(color);
+      return;
+    }
+
     if (checkCount === mainCounter) {
       console.log("checkCount === mainCounter\n",
                   checkCount," === ", mainCounter);
@@ -297,30 +328,33 @@
   }
 
   function reset() {
-    if (scale.currentOsc) stopWave();
+    if (currentOsc) stopWave();
     console.log("BEEEP!!!");
     mainCounter = simon.strict === true ? 0 : mainCounter;
     song = simon.strict === true ? getSong() : song;
+    //clearTimeoutAndSounds();
     flashBangBang();
     return;
-
   }
 
   function restart() {
-    if (scale.currentOsc) stopWave();
-    console.log("new game");
+    clearTimeoutAndSounds();
+    simon.player = false;
+    //$("div.quarter-circle").off();
+    $(".digit").html("00");
     mainCounter =  0;
     song = getSong();
+    console.log("new game");
     setTimeout(playSong, 750, 0);
     return;
-
   }
 
-  function turnOff() {
-    if (scale.currentOsc) stopWave();
-    console.log("stop game");
-    return;
-
+  function clearTimeoutAndSounds() {
+    // Set a fake timeout to get the highest timeout id
+    let highestTimeoutId = setTimeout(";");
+    for (var i = 0 ; i < highestTimeoutId ; i++) {
+      console.log(i); clearTimeout(i); }
+    if (currentOsc) { stopWave(); }
   }
 
   function flashBangBang() {
@@ -336,5 +370,80 @@
     setTimeout(playSong, 1300, 0);
     return;
   }
+
+  function playWinSong(color) {		
+    // write the function that animates one cycle (include all selectors that you want animated), then call setInterval to repeat it, use a counter to clearInterval...
+
+    // set lcd text
+    $(".digit").html("**");
+
+    // animate elements
+    let int50 = null,
+        play = true,
+        counter = 0,
+        a = 0,   // horizontal offset
+        b = 0,   // vertical offset
+        c = 5, // blur radius
+        d = 5,   // spread radius
+        f = 0.1, // opacity
+        g = 0;
+
+    int50 = setInterval(function() {
+      if (play === true) {
+        a += 13;
+        b += 37;
+        //c += 5;
+        d += 5;
+        f += 0.8;
+        g += 0.05;
+        counter ++;
+        console.log(g);
+        // bezel box-shadow
+        $("#bezel")
+          .css({"box-shadow":
+                + -a + "px " + -b + "px " + c + "px " + -d + "px rgba(62,221,75,"  + f + "), "
+                + a  + "px " + -b + "px " + c + "px " + d + "px rgba(221,75,62,"  + f + "), "
+                + -a + "px " + b  + "px " + c + "px " + -d + "px rgba( 5,62,221,"  + f + "), "
+                + a  + "px " + b  + "px " + c + "px " + d + "px rgba(255,234,55," + f + ")  "
+               });
+
+
+        a = a >= 90 ? -90 : a;
+        b = b >= 90 ? -90 : b;
+        //c = c >= 25 ? -25 : c;
+        d = d >= 25 ?  -25 : d;
+        //f = f >= 1 ? 0 : f;
+        g = g < 1 ? g : 0;
+
+
+        // animate big buttons
+        if (g < 0.5) {
+          $(".flash").addClass("active");
+          $(".digit").css({"opacity":0});
+        } else {
+          $(".flash").removeClass("active");
+          $(".digit").css({"opacity":1});
+        }
+      }
+    }, 15);
+
+    function clear() {
+      $("**").on("click", function() {
+        play = false;
+        $("#bezel").css({"box-shadow": ""});
+        $(".flash").css({"background":""});
+        $(".digit").css({"opacity":""});
+        counter = 0;
+      });
+    }
+
+    // stop animation (requires user input)		
+    setTimeout(clear, 5000);
+
+
+    return;
+  }
+
+  //playWinSong("red");
 
 }());

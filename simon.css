@@ -162,8 +162,8 @@ body {
   font-family:'VT323';
   font-size:50px;
   line-height:0.845;
-  text-shadow:1px 1px 10px red;
-  color:red;
+  text-shadow:none;
+  color:grey;
 }
 
 
@@ -172,7 +172,6 @@ body {
   height:10%;
   width:10%;
   border-radius:100%;
-  background:red;
 }
 
 .label {
@@ -184,16 +183,19 @@ body {
 #start-btn {
   top:40%;
   left:45%;
+  background:silver;
 }
 
 #strict-btn {
   top:40%;
   right:12%;
+  background:silver;
 }
 
 #onOff-btn {
   top:78%;
   left:45%;
+  background:maroon;
 }
 
 #start {
@@ -209,4 +211,8 @@ body {
 #onOff {
   top:88%;
   left:37%;
+}
+
+.active {
+	background:white;
 }
