@@ -1,0 +1,25 @@
+{
+  "name": "fcc-simon",
+  "version": "1.0.0",
+  "description": "freeCodeCamp: Simon Project",
+  "main": "simon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delamoe/fcc-simon.git"
+  },
+  "keywords": [
+    "simon",
+    "fcc",
+    "freeCodeCamp",
+    "JavaScript"
+  ],
+  "author": "Eryk de la Montana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/delamoe/fcc-simon/issues"
+  },
+  "homepage": "https://github.com/delamoe/fcc-simon#readme"
+}
