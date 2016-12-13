@@ -21,5 +21,6 @@
   "bugs": {
     "url": "https://github.com/delamoe/fcc-simon/issues"
   },
-  "homepage": "https://github.com/delamoe/fcc-simon#readme"
+  "homepage": "https://github.com/delamoe/fcc-simon#readme",
+  "devDependencies": {}
 }
